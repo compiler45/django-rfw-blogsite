@@ -34,8 +34,16 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
 
     # 3rd party
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth',
+    'rest_auth.registration',
     'rest_framework',
+    'rest_framework.authtoken',
 
+    # Django
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +55,10 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
 
@@ -110,6 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# output emails to the console, rather than setup an email server
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+
+# add ID for the Django "sites" framework, allows you to host multiple sites
+# from the same project
+SITE_ID = 1
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
