@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import filters, generics
+from rest_framework import filters, generics, viewsets
 
 from posts.models import Post
 from posts.permissions import IsAuthorOrReadOnly
@@ -8,7 +8,7 @@ from posts.serializers import PostSerializer, UserSerializer
 # Create your views here.
 
 
-class PostList(generics.ListCreateAPIView):
+class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = (
@@ -16,19 +16,9 @@ class PostList(generics.ListCreateAPIView):
         filters.OrderingFilter
     )
     search_fields = ('title', 'author__username')
-
-
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
     permission_classes = (IsAuthorOrReadOnly,)
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
